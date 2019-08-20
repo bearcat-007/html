@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+<style>
+    * {
+        margin: 0;
+        padding: 0
+    }
+    #demo {
+        display: block;
+        width: 350px;
+        height: 350px;
+        margin: 50px;
+        position: relative;
+        border: 1px solid #ccc;
+    }
+    #box1 {
+        position: relative;
+        z-index: 1;
+    }
+    #box1 img {
+        width: 350px;
+        height: 350px;
+    }
+    #float-box {
+        display: none;
+        width: 160px;
+        height: 120px;
+        position: absolute;
+        background: #ffffcc;
+        border: 1px solid #ccc;
+        filter: alpha(opacity=50);
+        opacity: 0.5;
+    }
+    #mark {      
+        position: absolute;
+        display: block;
+        width: 350px;
+        height: 350px;
+        background-color: #fff;
+        opacity: 0;
+        z-index: 10;
+    }
+    #box2 {
+        display: none;
+        position: absolute;
+        top: 0;
+        left: 350px;
+        width: 500px;
+        height: 600px;
+        overflow: hidden;
+        border: 1px solid #ccc;
+        z-index: 1;;
+    }
+    #box2 img {
+        position: absolute;
+        z-index: 5
+    }
+</style>
+</head>
+<body>
+<div id="demo">
+    <div id="box1">
+        <div id="mark"></div>
+        <div id="float-box"></div>
+        <img src="http://img1.gtimg.com/cul/pics/hv1/149/188/2207/143558264.jpg"/>
+    </div>
+    <div id="box2">
+        <img src="http://5b0988e595225.cdn.sohucs.com/images/20181118/4c8acaf1ea644463b4b4001827e555fc.jpeg"/>
+    </div>
+</div>
+<script>
+    window.onload = function () {
+        var demo=document.getElementById("demo");
+        var box1=document.getElementById("box1");
+        var mark=document.getElementById("mark");
+        var floatBox=document.getElementById("float-box");
+        var box2=document.getElementById("box2");
+        var box2Img=box2.getElementsByTagName("img")[0];
+        box1.onmouseover=function(){
+            floatBox.style.display="block";
+            box2.style.display="block";
+        }
+        box1.onmouseout=function(){
+            floatBox.style.display="none";
+            box2.style.display="none";
+        }
+        mark.onmousemove=function(eve){
+        var event=eve||window.event;    
+        var left=event.clientX-demo.offsetLeft-box1.offsetLeft-floatBox.offsetWidth/2;
+        var top=event.clientY-demo.offsetTop-box1.offsetTop-floatBox.offsetHeight/2;
+        if(left<0) left=0;
+        if(top<0) top=0;
+        if(left>box1.offsetWidth-floatBox.offsetWidth)
+                left=box1.offsetWidth-floatBox.offsetWidth;
+        if(top>box1.offsetHeight-floatBox.offsetHeight)
+                top=box1.offsetHeight-floatBox.offsetHeight;
+        floatBox.style.left=left+"px";
+        floatBox.style.top=top+"px";
+        var percentX=left/(mark.offsetWidth-floatBox.offsetWidth);
+        var percentY=top/(mark.offsetHeight-floatBox.offsetHeight);
+        box2Img.style.left=-percentX*(box2Img.offsetWidth-box2.offsetWidth)+"px";
+        box2Img.style.top=-percentY*(box2Img.offsetHeight-box2.offsetHeight)+"px";
+        }
+    }
+</script>
+</body>
+</html>
